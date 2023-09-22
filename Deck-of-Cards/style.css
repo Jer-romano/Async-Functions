@@ -1,0 +1,20 @@
+body {
+    background-color: rgb(9, 108, 16);
+}
+
+#card-div, #btn-div {
+    display: flex;
+    justify-content: center;
+}
+
+.card {
+    position: absolute;
+}
+
+button {
+    font-size: large;
+    padding: 10px;
+    margin: 0px 20px 45px 20px;
+    border-radius: 8px;
+    border: 2px solid black;
+}
