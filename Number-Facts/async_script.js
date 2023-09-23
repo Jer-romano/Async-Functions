@@ -4,7 +4,7 @@ let list = $("#num-list");
 
 let form2 = $("#form2");
 
-//The Code Below Uses Promises
+//The Code Below Uses Async/Await
 
 form.on("submit", getFacts);
 form2.on("submit", getMultipleFacts);
@@ -19,44 +19,48 @@ function addFactsToPage(facts) {
     }
 }
 
-function getFacts(e) {
+async function getFacts(e) {
     e.preventDefault();
 
     let nums = $("#numbers").val();
-
-    axios.get(`${BASE_URL}/${nums}`)
-    .then(res => {
+    try {
+        let res = await axios.get(`${BASE_URL}/${nums}`);
         addFactsToPage(res.data);
-        console.log(res.data);
-    }).catch(err => {
-         console.log(err)});
+
+    } catch(err) {
+        console.log(err);
+    }
 
 }
 
-function getMultipleFacts(e) {
+async function getMultipleFacts(e) {
     e.preventDefault();
-
-    let fourNumberPromises = [];    
+  
     let number = $("#num-2").val();
 
-    for (let i = 0; i < 4; i++) {
-        fourNumberPromises.push(
-            axios.get(`${BASE_URL}/${number}`)
-        )
-    }
+    try {
+        let f1 =  axios.get(`${BASE_URL}/${number}`);
+        let f2 =  axios.get(`${BASE_URL}/${number}`);
+        let f3 =  axios.get(`${BASE_URL}/${number}`);
+        let f4 =  axios.get(`${BASE_URL}/${number}`);
+    
+        let fact1 = await f1;
+        let fact2 = await f2;
+        let fact3 = await f3;
+        let fact4 = await f4;
 
-    Promise.all(fourNumberPromises)
-    .then(factsArray => {
+
+        let factsArray = [fact1, fact2, fact3, fact4];
+
         factsArray.forEach(f => {
             let li = document.createElement("li");
             li.textContent = f.data;
             $("#facts-list").append(li);
         })
-    })
-    .catch(err => console.log(err));
+
+    } catch(err) {
+        console.log(err);
+    }
+
 
 }
-
-
-
-
